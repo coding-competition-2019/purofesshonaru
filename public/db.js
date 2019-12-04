@@ -17,6 +17,10 @@ console.log("trololo")
 
 let placesRef = db.collection('places');
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 var activitiesList = null;
 let activitiesDocRef = db.collection('activities').doc('activities');
 let getDoc = activitiesDocRef.get()
@@ -26,6 +30,20 @@ let getDoc = activitiesDocRef.get()
     } else {
         
         activitiesList = doc.data()["activities"];
+        ul = document.getElementById("sports");
+        for (let i = 0; i < activitiesList.length; i++) {
+            //<li><input type="checkbox" name="HTML" value="0">HTML</li>
+            var li = document.createElement("li");
+            var checkbox = document.createElement("input");
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = false;
+            checkbox.value = 0;
+            li.name = activitiesList[i].capitalize();
+            li.appendChild(checkbox);
+            li.innerHTML = li.innerHTML + activitiesList[i].capitalize();
+            ul.appendChild(li);
+        }
+
         console.log('Document data:', activitiesList);
     }
     })
@@ -50,15 +68,45 @@ function searchSports(search_string) {
 
 
 function getPlacesByActivities(activities) {
-    var places_query = placesRef.where("activities", "array-contains", "tabata").where("activities", "array-contains", "hiit");
-    places_query.get()
-    .then(function(querySnapshot) {
+    var queries = [];
+    for (let i = 0; i < activities.length; i++) {
+        queries.push(placesRef.where("activities."+activities[i], "==" , true));
+    }
+    var results = [];
+    var query_i = 0;
+
+
+
+    Array.prototype.unique = function() {
+        var a = this.concat();
+        for(var i=0; i<a.length; ++i) {
+            for(var j=i+1; j<a.length; ++j) {
+                if(a[i].id === a[j].id)
+                    a.splice(j--, 1);
+            }
+        }
+    
+        return a;
+    };
+
+    var or_results = [];
+
+    function processNextQuery(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            //  console.log(doc.id, " => ", doc.data());
+            var data = doc.data();
+            data.id = doc.id;
+            results.push(data);
         });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+        if (query_i < queries.length-1){
+            query_i++;
+            queries[query_i].get().then(processNextQuery);
+        } else {
+            or_results = results.unique();
+            console.log(or_results);
+        }
+    }
+
+    queries[query_i].get().then(processNextQuery);
+    
 }
