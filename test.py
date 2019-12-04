@@ -6,10 +6,16 @@ ind = True
 first = True
 with open("places.json", "r", encoding="utf-8") as json_file:
     data = json.load(json_file)
+    #print(data)
     for club in data["places"]:
+        help_act = { }
         for activity in club["activities"]:
-            all_act.append(activity)
-    
+           help_act[activity] = True 
+        #print(help_act)
+        club["activities"] = help_act
+    print(data)
+
+    """    
     for activity in all_act:
         if first:
             my.append(activity)
@@ -22,6 +28,6 @@ with open("places.json", "r", encoding="utf-8") as json_file:
                     my.append(activity)
                 else:
                     continue
-    with open("activities.json", "w", encoding="utf-8") as write_json:
-        json.dump(my, write_json, ensure_ascii=False)
-        
+    """
+    with open("places1.json", "w", encoding="utf-8") as write_json:
+        json.dump(data, write_json, ensure_ascii=False)
