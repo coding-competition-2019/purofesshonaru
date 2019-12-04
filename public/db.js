@@ -50,15 +50,45 @@ function searchSports(search_string) {
 
 
 function getPlacesByActivities(activities) {
-    var places_query = placesRef.where("activities", "array-contains", "tabata").where("activities", "array-contains", "hiit");
-    places_query.get()
-    .then(function(querySnapshot) {
+    var queries = [];
+    for (let i = 0; i < activities.length; i++) {
+        queries.push(placesRef.where("activities."+activities[i], "==" , true));
+    }
+    var results = [];
+    var query_i = 0;
+
+
+
+    Array.prototype.unique = function() {
+        var a = this.concat();
+        for(var i=0; i<a.length; ++i) {
+            for(var j=i+1; j<a.length; ++j) {
+                if(a[i].id === a[j].id)
+                    a.splice(j--, 1);
+            }
+        }
+    
+        return a;
+    };
+
+    var or_results = [];
+
+    function processNextQuery(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            //  console.log(doc.id, " => ", doc.data());
+            var data = doc.data();
+            data.id = doc.id;
+            results.push(data);
         });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+        if (query_i < queries.length-1){
+            query_i++;
+            queries[query_i].get().then(processNextQuery);
+        } else {
+            or_results = results.unique();
+            console.log(or_results);
+        }
+    }
+
+    queries[query_i].get().then(processNextQuery);
+    
 }
