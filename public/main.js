@@ -117,22 +117,7 @@
 
 
     
-    function button() {
-      var input, filter, ul, li, a, i;
-      input = document.getElementById("input");
-      filter = input.value.toUpperCase();
-      ul = document.getElementById("sports");
-      li = ul.getElementsByTagName("li");
-      str = [];
-      for (i = 0; i < li.length; i++) {
-        input = li[i].getElementsByTagName("input")[0];
-        if (input.checked == true) {
-          str.push(input.name.toLowerCase());
-        }
-      }
-      console.log(str)
-      getPlacesByActivities(str,show_places);
-    }
+    
 
 
 
@@ -146,6 +131,24 @@ function closeSearch() {
   document.getElementById("search").style.height = "10%";
 }
 
+function button_pressed() {
+  document.getElementById("search").style.top = "90%";
+  document.getElementById("search").style.height = "10%";
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("input");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+  str = [];
+  for (i = 0; i < li.length; i++) {
+    input = li[i].getElementsByTagName("input")[0];
+    if (input.checked == true) {
+      str.push(input.name.toLowerCase());
+    }
+  }
+  console.log(str);
+  getPlacesByActivities(str,show_places);
+}
 
 function searchSport() {
 
