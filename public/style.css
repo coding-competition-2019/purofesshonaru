@@ -75,7 +75,9 @@ body {
     position: fixed;
     z-index: 10000;
     width: -webkit-fill-available; 
+    width: -moz-available;
     height: -webkit-fill-available;
+    height: -moz-available;
     left: 0px;
     top: 90%;
     background-color: white;
