@@ -6,14 +6,34 @@ document.addEventListener('DOMContentLoaded', function() {
       maxZoom: 18,
       id: 'mapbox/streets-v11',
       accessToken: 'pk.eyJ1IjoiZXBhbmVtdSIsImEiOiJjazNyMzhqbDUwNjlhM2hwczJibXptYzdtIn0.ZD4apJYeraoXDM9tVaV0eA'
-    }).addTo(mymap); 
+    }).addTo(mymap); ;
 
-    function onMapClick(e) {
-      alert("You clicked the map at " + e.latlng);
+    POIs = [];  
+
+    const provider = new window.GeoSearch.OpenStreetMapProvider();
+
+    function place_POI(res) {
+        loc = res[0];
+        var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(mymap);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
+        POIs.push(marker);
     }
 
-    mymap.on('click', onMapClick);
+    function place_address(street, city, zipcode) {    
+        provider.search({ query: street+", "+city+", "+zipcode })
+            .then(res => place_POI(res));
+    }
+
+    place_address("Mládežnická 1119","Mladá Boleslav","29301")
+
+    function removePOIs() {
+        for (i = 0; i < POIs.length; i++) {
+            POIs[i].remove()
+        }
+    }
     
+    mymap.on('click', e => removePOIs());
+
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
     //
@@ -27,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       let app = firebase.app();
       let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-      document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      document.getElementById('mymap').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
     } catch (e) {
       console.error(e);
-      document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+      document.getElementById('mymap').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
 });
