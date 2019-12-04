@@ -134,3 +134,10 @@ body {
 #res li {
     display: none;
 }
+
+
+#sports input {
+    margin-right: 5%;
+    width: 20px;
+    height: 20px;
+}
