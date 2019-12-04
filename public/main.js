@@ -1,4 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
 
     var map = L.map('mapid', { zoomControl:false }).setView([50.104098, 14.390438], 18);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -87,7 +86,27 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error(e);
       document.getElementById('map').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
-});
+
+
+    
+    function button() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("input");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("sports");
+      li = ul.getElementsByTagName("li");
+      str = [];
+      for (i = 0; i < li.length; i++) {
+        input = li[i].getElementsByTagName("input")[0];
+        if (input.checked == true) {
+          str.push(input.name.toLowerCase());
+        }
+      }
+      console.log(str)
+      getPlacesByActivities(str,show_places);
+    }
+
+
 
 function openSearch() {
   document.getElementById("search").style.top = "40%";
@@ -210,8 +229,6 @@ function showSports() {
     } 
   }
 }
-
-
 
 
 

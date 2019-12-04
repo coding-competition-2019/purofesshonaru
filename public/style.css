@@ -147,3 +147,16 @@ body {
     overflow: scroll;
 
 }
+
+#search button {
+    position: absolute;
+    top: -60px;
+    width: 24%;
+    margin: 0% 75%;
+    border: none;
+    height: 50px;
+    background-color: #3bd528;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0px 5px 18px #000000;
+}
