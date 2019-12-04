@@ -69,7 +69,7 @@ function searchSports(search_string) {
 }
 
 
-function getPlacesByActivities(activities) {
+function getPlacesByActivities(activities, callback_function) {
     var queries = [];
     for (let i = 0; i < activities.length; i++) {
         queries.push(placesRef.where("activities."+activities[i], "==" , true));
@@ -106,6 +106,7 @@ function getPlacesByActivities(activities) {
         } else {
             or_results = results.unique();
             console.log(or_results);
+            callback_function(or_results)
         }
     }
 
