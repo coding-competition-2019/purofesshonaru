@@ -66,3 +66,21 @@ body {
 #mapid { 
     height: 100vh; 
 }
+
+#search { 
+    position: fixed;
+    z-index: 10000;
+    width: -webkit-fill-available; 
+    height: -webkit-fill-available;
+    left: 0px;
+    top: 90%;
+    background-color: black;
+    border-top-left-radius: 3%;
+    border-top-right-radius: 3%;
+    transition: 0.5s;
+    
+}
+
+#search:active {
+    top: 40%;
+}
