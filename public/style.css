@@ -135,6 +135,13 @@ body {
     display: none;
 }
 
+
+#sports input {
+    margin-right: 5%;
+    width: 20px;
+    height: 20px;
+}
+
 #sportsdiv {
     max-height: 80%;
     overflow: scroll;
