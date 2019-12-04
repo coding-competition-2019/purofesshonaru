@@ -33,3 +33,27 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
 });
+
+function openSearch() {
+  document.getElementById("search").style.top = "40%";
+}
+
+function closeSearch() {
+  document.getElementById("search").style.top = "90%";
+}
+
+function searchSport() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("input");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "table";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
