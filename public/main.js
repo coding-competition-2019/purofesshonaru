@@ -19,7 +19,9 @@
             popupAnchor: [0, -8]
         });
 
-        currPos = e.latlng;
+        console.log(e.latlng);
+
+        currPos = [e.latlng.lat, e.latlng.lng];
 
         L.marker(e.latlng, {icon: posIcon}).addTo(map)
             .bindPopup("You are within " + radius + " meters from this point");
@@ -43,6 +45,7 @@
     function place_POI(res, place, origin, maxDist) {
         if (res.length > 0) {
             loc = res[0];
+            console.log(getDistance(origin, [Number(loc.y), Number(loc.x)]))
             if (getDistance(origin, [Number(loc.y), Number(loc.x)]) <= maxDist) {
                 var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(map);
                 string_prep = "<h3>"+place.name+"</h3><p>"+
@@ -61,7 +64,7 @@
 
     function show_places(places) {
         origin = currPos;
-        maxDist = 10000;
+        maxDist = 50000;
         removePOIs()
         for (i = 0; i < places.length; i++) {
             place_by_address(places[i], origin, maxDist);
@@ -83,7 +86,9 @@
     
         var deltaLat = lat2 - lat1;
         var deltaLon = lon2 - lon1;
-    
+        
+        console.log(origin[1], lon1)
+
         var a = Math.pow(Math.sin(deltaLat/2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon/2), 2);
         var c = 2 * Math.asin(Math.sqrt(a));
         var EARTH_RADIUS = 6371;
