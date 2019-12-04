@@ -6,14 +6,34 @@ document.addEventListener('DOMContentLoaded', function() {
       maxZoom: 18,
       id: 'mapbox/streets-v11',
       accessToken: 'pk.eyJ1IjoiZXBhbmVtdSIsImEiOiJjazNyMzhqbDUwNjlhM2hwczJibXptYzdtIn0.ZD4apJYeraoXDM9tVaV0eA'
-    }).addTo(mymap); 
+    }).addTo(mymap); ;
 
-    function onMapClick(e) {
-      alert("You clicked the map at " + e.latlng);
+    POIs = [];  
+
+    const provider = new window.GeoSearch.OpenStreetMapProvider();
+
+    function place_POI(res) {
+        loc = res[0];
+        var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(mymap);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
+        POIs.push(marker);
     }
 
-    mymap.on('click', onMapClick);
+    function place_address(street, city, zipcode) {    
+        provider.search({ query: street+", "+city+", "+zipcode })
+            .then(res => place_POI(res));
+    }
+
+    place_address("Mládežnická 1119","Mladá Boleslav","29301")
+
+    function removePOIs() {
+        for (i = 0; i < POIs.length; i++) {
+            POIs[i].remove()
+        }
+    }
     
+    mymap.on('click', e => removePOIs());
+
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
     //
@@ -27,10 +47,10 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       let app = firebase.app();
       let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-      document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      document.getElementById('mymap').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
     } catch (e) {
       console.error(e);
-      document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+      document.getElementById('mymap').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
 });
 
@@ -48,12 +68,32 @@ function searchSport() {
   filter = input.value.toUpperCase();
   ul = document.getElementById("sports");
   li = ul.getElementsByTagName("li");
+  HTML = ""
+  checked_sports = 0;
   for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+    input = li[i].getElementsByTagName("input")[0];
+    if (input.name.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "table";
     } else {
       li[i].style.display = "none";
     }
+
+    if (filter == "") {
+      li[i].style.display = "none";
+    }
+    if (input.checked == true) {
+      HTML = HTML + "<p>"+ input.name + "</p>";
+      checked_sports = checked_sports + 1;
+    }
   }
+  if (checked_sports == 0) {
+    document.getElementById("checked_sports").style.display = "none";
+    document.getElementById("input").style.width = "100%";
+  }
+  else {  
+    document.getElementById("input").style.width = "80%";
+    document.getElementById("checked_sports").style.display = "table";
+    document.getElementById("checked_sports").innerHTML = checked_sports;
+  }
+  
 }

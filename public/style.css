@@ -85,6 +85,12 @@ body {
     box-shadow: 0px 5px 18px #000000;
 }
 
+#search .s {
+    margin: 3% 10%;
+    width: inherit;
+    display: flex;
+}
+
 #input {
     box-sizing: border-box;
     background-image: url(../images/searchicon.png);
@@ -94,9 +100,19 @@ body {
     padding: 14px 20px 12px 45px;
     border: none;
     border-bottom: 1px solid #ddd;
-    margin: 3% 10%;
-    width: inherit;
+    width: 100%;
 }
+
+#checked_sports {
+    font-size: 16px;
+    width: 20%;
+    text-align: center;
+    margin: 0;
+    background: #62ce10;
+    padding: 14px 0px 12px 0px;
+    display: none;
+}
+
 
 #attribution {
     width: auto;

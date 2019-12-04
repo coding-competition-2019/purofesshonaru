@@ -15,13 +15,19 @@
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
 
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-¨
+  
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <script src="https://unpkg.com/leaflet-geosearch@2.7.0/dist/bundle.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
@@ -30,22 +36,26 @@
     </div>
     
     <div id="search" onclick="openSearch()">
-      <input type="text" placeholder="Search.." id="input" onkeyup="searchSport()" >
-      <ul id="sports">
-        <li><a href="#">HTML</a></li>
-        <li><a href="#">CSS</a></li>
-        <li><a href="#">JavaScript</a></li>
-        <li><a href="#">PHP</a></li>
-        <li><a href="#">Python</a></li>
-        <li><a href="#">jQuery</a></li>
-        <li><a href="#">SQL</a></li>
-        <li><a href="#">Bootstrap</a></li>
-        <li><a href="#">Node.js</a></li>
+      <div class="s">
+          <input type="text" placeholder="Search.." id="input" onkeyup="searchSport()">
+          <p id="checked_sports">0</p>
+      </div>
+      
+      <ul id="sports" onclick="searchSport()">
+        <li><input type="checkbox" name="HTML" value="0">HTML</li>
+        <li><input type="checkbox" name="CSS" value="0">CSS</li>
+        <li><input type="checkbox" name="JavaScript" value="0">JavaScript</li>
+        <li><input type="checkbox" name="PHP" value="0">PHP</li>
+        <li><input type="checkbox" name="Python" value="0">Python</li>
+        <li><input type="checkbox" name="jQuery" value="0">jQuery</li>
+        <li><input type="checkbox" name="SQL" value="0">SQL</li>
+        <li><input type="checkbox" name="Bootstrap" value="0">Bootstrap</li>
+        <li><input type="checkbox" name="Node.js" value="0">Node.js</li>
       </ul>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+
+      <div id="results">
+
+      </div>
     </div>
 
 
