@@ -48,12 +48,32 @@ function searchSport() {
   filter = input.value.toUpperCase();
   ul = document.getElementById("sports");
   li = ul.getElementsByTagName("li");
+  HTML = ""
+  checked_sports = 0;
   for (i = 0; i < li.length; i++) {
-    a = li[i].getElementsByTagName("a")[0];
-    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+    input = li[i].getElementsByTagName("input")[0];
+    if (input.name.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "table";
     } else {
       li[i].style.display = "none";
     }
+
+    if (filter == "") {
+      li[i].style.display = "none";
+    }
+    if (input.checked == true) {
+      HTML = HTML + "<p>"+ input.name + "</p>";
+      checked_sports = checked_sports + 1;
+    }
   }
+  if (checked_sports == 0) {
+    document.getElementById("checked_sports").style.display = "none";
+    document.getElementById("input").style.width = "100%";
+  }
+  else {  
+    document.getElementById("input").style.width = "80%";
+    document.getElementById("checked_sports").style.display = "table";
+    document.getElementById("checked_sports").innerHTML = checked_sports;
+  }
+  
 }
