@@ -17,6 +17,10 @@ console.log("trololo")
 
 let placesRef = db.collection('places');
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 var activitiesList = null;
 let activitiesDocRef = db.collection('activities').doc('activities');
 let getDoc = activitiesDocRef.get()
@@ -26,6 +30,20 @@ let getDoc = activitiesDocRef.get()
     } else {
         
         activitiesList = doc.data()["activities"];
+        ul = document.getElementById("sports");
+        for (let i = 0; i < activitiesList.length; i++) {
+            //<li><input type="checkbox" name="HTML" value="0">HTML</li>
+            var li = document.createElement("li");
+            var checkbox = document.createElement("input");
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.checked = false;
+            checkbox.value = 0;
+            li.name = activitiesList[i].capitalize();
+            li.appendChild(checkbox);
+            li.innerHTML = li.innerHTML + activitiesList[i].capitalize();
+            ul.appendChild(li);
+        }
+
         console.log('Document data:', activitiesList);
     }
     })
