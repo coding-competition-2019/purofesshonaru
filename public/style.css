@@ -127,3 +127,9 @@ body {
 #res li {
     display: none;
 }
+
+#sportsdiv {
+    max-height: 80%;
+    overflow: scroll;
+
+}

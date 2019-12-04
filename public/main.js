@@ -82,10 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function openSearch() {
   document.getElementById("search").style.top = "40%";
+  document.getElementById("search").style.height = "60%";
 }
 
 function closeSearch() {
   document.getElementById("search").style.top = "90%";
+  document.getElementById("search").style.height = "10%";
 }
 
 
