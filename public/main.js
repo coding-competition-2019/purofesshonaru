@@ -38,27 +38,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const provider = new window.GeoSearch.OpenStreetMapProvider();
 
-    function place_POI(res) {
+    function place_POI(res, place) {
         loc = res[0];
         var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(map);
-        marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
+        string_prep = "<h3>"+place.name+"</h3>"+
+        place.address.street+", "+place.address.city+", "+place.address.zipCode+
+        "<a href=\""+place.url+"\">"+place.url+"<\a>"
+        marker.bindPopup(string_prep);
         POIs.push(marker);
     }
 
-    function place_address(street, city, zipcode) {    
-        provider.search({ query: street+", "+city+", "+zipcode })
-            .then(res => place_POI(res));
+    function place_by_address(place) {    
+        provider.search({ query: place.address.street+", "+place.address.city+", "+place.address.zipCode })
+            .then(res => place_POI(res, place));
     }
 
-    place_address("Mládežnická 1119","Mladá Boleslav","29301")
+    function show_places(places) {
+        for (i = 0; i < places.length; i++) {
+            place_by_address(places[i]);
+        }
+    }
 
     function removePOIs() {
         for (i = 0; i < POIs.length; i++) {
             POIs[i].remove()
         }
     }
-    
-    map.on('click', e => removePOIs());
+
+    getPlacesByActivities(['tabata','hiit'], show_places);
+
+    map.on('click', e => {if (confirm("Smazat vyber?")) {removePOIs()}});
 
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
