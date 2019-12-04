@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
       accessToken: 'pk.eyJ1IjoiZXBhbmVtdSIsImEiOiJjazNyMzhqbDUwNjlhM2hwczJibXptYzdtIn0.ZD4apJYeraoXDM9tVaV0eA'
     }).addTo(map); ;
 
+    currPos = [50.104098, 14.390438];
+
     function onLocationFound(e) {
         var radius = e.accuracy / 2;
 
@@ -17,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
             iconAnchor: [8, 8],
             popupAnchor: [0, -8]
         });
-        L.marker([50.505, 30.57], ).addTo(map);
+
+        currPos = e.latlng;
 
         L.marker(e.latlng, {icon: posIcon}).addTo(map)
             .bindPopup("You are within " + radius + " meters from this point");
@@ -38,24 +41,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const provider = new window.GeoSearch.OpenStreetMapProvider();
 
-    function place_POI(res, place) {
-        loc = res[0];
-        var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(map);
-        string_prep = "<h3>"+place.name+"</h3>"+
-        place.address.street+", "+place.address.city+", "+place.address.zipCode+
-        "<a href=\""+place.url+"\">"+place.url+"<\a>"
-        marker.bindPopup(string_prep);
-        POIs.push(marker);
+    function place_POI(res, place, origin, maxDist) {
+        if (res.length > 0) {
+            loc = res[0];
+            if (getDistance(origin, [Number(loc.y), Number(loc.x)]) <= maxDist) {
+                var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(map);
+                string_prep = "<h3>"+place.name+"</h3><p>"+
+                place.address.street+", "+place.address.city+", "+place.address.zipCode+"<br>"+
+                "<a href=\""+place.url+"\">"+place.url+"<\a></p>"
+                marker.bindPopup(string_prep);
+                POIs.push(marker);
+            }
+        }
     }
 
-    function place_by_address(place) {    
+    function place_by_address(place, origin, maxDist) {  
         provider.search({ query: place.address.street+", "+place.address.city+", "+place.address.zipCode })
-            .then(res => place_POI(res, place));
+            .then(res => place_POI(res, place, origin, maxDist));
     }
 
     function show_places(places) {
+        origin = currPos;
+        maxDist = 10000;
+        removePOIs()
         for (i = 0; i < places.length; i++) {
-            place_by_address(places[i]);
+            place_by_address(places[i], origin, maxDist);
         }
     }
 
@@ -65,9 +75,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    getPlacesByActivities(['tabata','hiit'], show_places);
+    function getDistance(origin, destination) {
+        // return distance in meters
+        var lon1 = toRadian(origin[1]),
+            lat1 = toRadian(origin[0]),
+            lon2 = toRadian(destination[1]),
+            lat2 = toRadian(destination[0]);
+    
+        var deltaLat = lat2 - lat1;
+        var deltaLon = lon2 - lon1;
+    
+        var a = Math.pow(Math.sin(deltaLat/2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon/2), 2);
+        var c = 2 * Math.asin(Math.sqrt(a));
+        var EARTH_RADIUS = 6371;
+        return c * EARTH_RADIUS * 1000;
+    }
+    function toRadian(degree) {
+        return degree*Math.PI/180;
+    }
+    
 
-    map.on('click', e => {if (confirm("Smazat vyber?")) {removePOIs()}});
+    //map.on('click', e => {if (confirm("Smazat vyber?")) {removePOIs()}});
 
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
