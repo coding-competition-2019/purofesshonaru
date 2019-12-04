@@ -93,7 +93,7 @@ body {
 
 #input {
     box-sizing: border-box;
-    background-image: url(../images/searchicon.png);
+    background-image: url(./images/searchicon.png);
     background-position: 14px 12px;
     background-repeat: no-repeat;
     font-size: 16px;

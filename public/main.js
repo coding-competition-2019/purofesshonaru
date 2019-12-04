@@ -1,19 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    var mymap = L.map('mapid', { zoomControl:false }).setView([50.104098, 14.390438], 18);
+    var map = L.map('mapid', { zoomControl:false }).setView([50.104098, 14.390438], 18);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
       id: 'mapbox/streets-v11',
       accessToken: 'pk.eyJ1IjoiZXBhbmVtdSIsImEiOiJjazNyMzhqbDUwNjlhM2hwczJibXptYzdtIn0.ZD4apJYeraoXDM9tVaV0eA'
-    }).addTo(mymap); 
+    }).addTo(map); ;
 
-    function onMapClick(e) {
-      alert("You clicked the map at " + e.latlng);
+    function onLocationFound(e) {
+        var radius = e.accuracy / 2;
+
+        var posIcon = L.icon({
+            iconUrl: './images/position.png',
+            iconSize: [16, 16],
+            iconAnchor: [8, 8],
+            popupAnchor: [0, -8]
+        });
+        L.marker([50.505, 30.57], ).addTo(map);
+
+        L.marker(e.latlng, {icon: posIcon}).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point");
+
+        L.circle(e.latlng, radius).addTo(map);
     }
 
-    mymap.on('click', onMapClick);
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({setView: true, maxZoom: 18});
     
+    POIs = [];  
+
+    const provider = new window.GeoSearch.OpenStreetMapProvider();
+
+    function place_POI(res) {
+        loc = res[0];
+        var marker = L.marker([Number(loc.y), Number(loc.x)]).addTo(map);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup.");
+        POIs.push(marker);
+    }
+
+    function place_address(street, city, zipcode) {    
+        provider.search({ query: street+", "+city+", "+zipcode })
+            .then(res => place_POI(res));
+    }
+
+    place_address("Mládežnická 1119","Mladá Boleslav","29301")
+
+    function removePOIs() {
+        for (i = 0; i < POIs.length; i++) {
+            POIs[i].remove()
+        }
+    }
+    
+    map.on('click', e => removePOIs());
+
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
     // // The Firebase SDK is initialized and available here!
     //
@@ -27,10 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
       let app = firebase.app();
       let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-      document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      document.getElementById('map').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
     } catch (e) {
       console.error(e);
-      document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+      document.getElementById('map').innerHTML = 'Error loading the Firebase SDK, check the console.';
     }
 });
 
