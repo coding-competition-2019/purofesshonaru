@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neco Hezkeho</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.5.0/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.5.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/7.5.0/firebase-database.js"></script>
-    <script defer src="/__/firebase/7.5.0/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.5.0/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
 
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -39,7 +30,7 @@
       </div>
       
       <ul id="sports" onclick="searchSport()">
-        <li><input type="checkbox" name="HTML" value="0">HTML</li>
+        <!--<li><input type="checkbox" name="HTML" value="0">HTML</li>
         <li><input type="checkbox" name="CSS" value="0">CSS</li>
         <li><input type="checkbox" name="JavaScript" value="0">JavaScript</li>
         <li><input type="checkbox" name="PHP" value="0">PHP</li>
@@ -47,7 +38,7 @@
         <li><input type="checkbox" name="jQuery" value="0">jQuery</li>
         <li><input type="checkbox" name="SQL" value="0">SQL</li>
         <li><input type="checkbox" name="Bootstrap" value="0">Bootstrap</li>
-        <li><input type="checkbox" name="Node.js" value="0">Node.js</li>
+        <li><input type="checkbox" name="Node.js" value="0">Node.js</li>-->
       </ul>
 
       <!--
@@ -68,6 +59,16 @@
     </div>
 
 
-    <script src="main.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+  <script src="db.js"></script>
+  <script src="main.js"></script>
   </body>
 </html>
