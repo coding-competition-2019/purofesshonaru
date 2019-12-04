@@ -91,33 +91,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function openSearch() {
   document.getElementById("search").style.top = "40%";
+  document.getElementById("search").style.height = "60%";
 }
 
 function closeSearch() {
   document.getElementById("search").style.top = "90%";
+  document.getElementById("search").style.height = "10%";
 }
 
+
 function searchSport() {
+
   var input, filter, ul, li, a, i;
   input = document.getElementById("input");
   filter = input.value.toUpperCase();
   ul = document.getElementById("sports");
   li = ul.getElementsByTagName("li");
-  HTML = ""
+
   checked_sports = 0;
   for (i = 0; i < li.length; i++) {
     input = li[i].getElementsByTagName("input")[0];
-    if (input.name.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "table";
-    } else {
-      li[i].style.display = "none";
+    if (input.value == 0) {
+      if (input.name.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "table";
+      } else {
+        li[i].style.display = "none";
+      }
+  
+      if (filter == "") {
+        li[i].style.display = "none";
+      }
     }
-
-    if (filter == "") {
-      li[i].style.display = "none";
+    else {
+      if (input.checked == true) {
+        li[i].style.display = "table";
+      }
+      else {
+        li[i].style.display = "none";
+      }
     }
+    
     if (input.checked == true) {
-      HTML = HTML + "<p>"+ input.name + "</p>";
       checked_sports = checked_sports + 1;
     }
   }
@@ -130,5 +144,116 @@ function searchSport() {
     document.getElementById("checked_sports").style.display = "table";
     document.getElementById("checked_sports").innerHTML = checked_sports;
   }
-  
+}
+
+
+function show() {
+
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("input");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+
+  for (i = 0; i < li.length; i++) {
+    input = li[i].getElementsByTagName("input")[0];
+    if (input.value == 0) {
+      input.value = 1;
+    }
+    else{
+      input.value = 0;
+    }
+  }
+  searchSport();
+
+}
+
+
+function def_show() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("input");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+
+  for (i = 0; i < li.length; i++) {
+    input = li[i].getElementsByTagName("input")[0];
+    input.value = 0;
+  }
+  searchSport();
+}
+
+
+function showSports() {
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+
+  ul_res = document.getElementById("res");
+  li_res = ul_res.getElementsByTagName("li");
+
+  for (i = 0; i < li.length; i++) {
+    input = li[i].getElementsByTagName("input")[0];
+    input_res = li_res[i].getElementsByTagName("input")[0];
+    if (input.value == 0) {
+      input.value = 1;
+      input_res.checked = input.checked;
+      if (input_res.checked == true) {
+        li_res[i].style.display = "table";
+        li[i].style.display = "none";
+      } else {
+        li_res[i].style.display = "none";
+      }
+    }
+    else {
+      input.value = 0;
+      li_res[i].style.display = "none";
+    } 
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function deleteSport() {
+  ul = document.getElementById("sports");
+  li = ul.getElementsByTagName("li");
+
+  ul_res = document.getElementById("res");
+  li_res = ul_res.getElementsByTagName("li");
+
+  checked_sports = 0;
+  for (i = 0; i < li.length; i++) {
+    input = li[i].getElementsByTagName("input")[0];
+    input_res = li_res[i].getElementsByTagName("input")[0];
+    input.checked = input_res.checked;
+    if (input_res.checked == true) {
+      checked_sports =  checked_sports + 1;
+    }
+    else {
+      li_res[i].style.display = "none";
+    }
+  }
+
+  if (checked_sports == 0) {
+    document.getElementById("checked_sports").style.display = "none";
+    document.getElementById("input").style.width = "100%";
+    for (i = 0; i < li.length; i++) {
+      input = li[i].getElementsByTagName("input")[0];
+      input.value = 0;
+    }
+  }
+  else {  
+    document.getElementById("input").style.width = "80%";
+    document.getElementById("checked_sports").style.display = "table";
+    document.getElementById("checked_sports").innerHTML = checked_sports;
+  }
 }

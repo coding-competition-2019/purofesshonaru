@@ -31,6 +31,7 @@ let getDoc = activitiesDocRef.get()
         
         activitiesList = doc.data()["activities"];
         ul = document.getElementById("sports");
+        console.log(ul);
         for (let i = 0; i < activitiesList.length; i++) {
             //<li><input type="checkbox" name="HTML" value="0">HTML</li>
             var li = document.createElement("li");
@@ -38,9 +39,10 @@ let getDoc = activitiesDocRef.get()
             checkbox.setAttribute("type", "checkbox");
             checkbox.checked = false;
             checkbox.value = 0;
-            li.name = activitiesList[i].capitalize();
+            checkbox.name = activitiesList[i].capitalize();
             li.appendChild(checkbox);
             li.innerHTML = li.innerHTML + activitiesList[i].capitalize();
+            console.log(li);
             ul.appendChild(li);
         }
 
